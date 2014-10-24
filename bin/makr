@@ -6,7 +6,7 @@ require 'erb'
 if !File.exist?('config.json')
 	puts 'No config.json found- outputting config.json template'
 
-	config = IO.read("#{Gem.datadir('maker')}/config.json")
+	config = IO.read("#{Gem.datadir('makr')}/config.json")
 	File.open('config.json', 'w') do |f|
 		f.write config
 	end
@@ -17,7 +17,7 @@ end
 
 puts 'Reading config.json'
 config = JSON.parse(IO.read("config.json"))
-template = IO.read("#{Gem.datadir('maker')}/Makefile.erb")
+template = IO.read("#{Gem.datadir('makr')}/Makefile.erb")
 
 puts 'Generating Makefile'
 makefile_string = ERB.new(template, nil, '-').result(binding)

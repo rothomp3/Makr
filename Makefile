@@ -1,12 +1,13 @@
 VERSION = 0.0.0
+GEM_NAME = makr
 
-all: maker-$(VERSION).gem
+all: $(GEM_NAME)-$(VERSION).gem
 
-maker-$(VERSION).gem:
-	gem build maker.gemspec
+$(GEM_NAME)-$(VERSION).gem:
+	gem build $(GEM_NAME).gemspec
 
 clean:
-	rm -rf maker-$(VERSION).gem
+	rm -rf $(GEM_NAME)-$(VERSION).gem
 
-install: maker-$(VERSION).gem
-	gem install maker-$(VERSION).gem
+install: $(GEM_NAME)-$(VERSION).gem
+	gem install $(GEM_NAME)-$(VERSION).gem
