@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'erb'
+
+if !File.exist?('config.json')
+	puts 'No config.json found- outputting config.json template'
+
+	config = IO.read("#{Gem.datadir('maker')}/config.json")
+	File.open('config.json', 'w') do |f|
+		f.write config
+	end
+
+	puts 'config.json created, please edit and run again.'
+	abort
+end
+
+puts 'Reading config.json'
+config = JSON.parse(IO.read("config.json"))
+template = IO.read("#{Gem.datadir('maker')}/Makefile.erb")
+
+puts 'Generating Makefile'
+makefile_string = ERB.new(template, nil, '-').result(binding)
+
+puts 'Writing Makefile'
+File.open("Makefile", "w") do |f|
+			f.write makefile_string
+end
+
+puts 'Done'
