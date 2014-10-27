@@ -72,6 +72,9 @@ $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=ipa["archive
 <% end %>
 
 <% if config["distributions"] != nil %>
+
+distribute-all: <% config["distributions"].each do |distribution| %>distribute-<%= distribution["name"] %> <% end %>
+
 <% config["distributions"].each do |distribution| %>
 
 <% if distribution["type"] == "testflight" %>
