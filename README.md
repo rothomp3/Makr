@@ -1,8 +1,8 @@
 Makr
 ====
 
-Remember to type "makr"
-Remember to check your configuration casing!
+* Remember to type "makr"
+* Remember to check your configuration casing!
 
 # Installation
 ```
