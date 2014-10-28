@@ -37,14 +37,15 @@ else
 UPDATE_VERSION=
 endif
 
+# Updates project version if needed and generates all IPAs
 all: $(UPDATE_VERSION) $(IPAS)
-# Updates project version using agvtool
 
+# Updates project version using agvtool
 update-version:
 	agvtool new-version -all $(CURRENT_VERSION).$(BUILD_NUMBER)
 
-<% config["archives"].each do |archive| %>
-
+<% config["archives"].each do |archive| -%>
+# Create <%=archive["name"]%>.xcarchive
 $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive:
 	xcodebuild archive $(BUILD_ENV_OPTIONS) \
 		-scheme "<%=archive["scheme"]%>" \
@@ -57,27 +58,29 @@ $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive:
 	mkdir -p "$(DSYMS_PATH)/<%=archive["name"]%>"
 	cp -r "$(CONFIGURATION_BUILD_DIR)/"*".dSYM" "$(DSYMS_PATH)/<%=archive["name"]%>/"
 	rm -rf $(TEMP_DIR)
-<% end %>
 
+<% end -%>
+# Path to built IPAs
 $(IPAS_PATH):
 	mkdir -p $(IPAS_PATH)
 
-<% config["ipas"].each do |ipa| %>
+<% config["ipas"].each do |ipa| -%>
+# Create <%=ipa["name"]%>.ipa
 $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=ipa["archive"]%>.xcarchive
 	xcodebuild -exportArchive \
 		-exportFormat IPA \
 		-exportProvisioningProfile "<%=ipa["profile"]%>" \
 		-archivePath "$(ARCHIVES_PATH)/<%=ipa["archive"]%>.xcarchive" \
 		-exportPath "$@"
-<% end %>
 
-<% if config["distributions"] != nil %>
-
+<% end -%>
+<% if config["distributions"] != nil -%>
+# Run all distribution tasks
 distribute-all: <% config["distributions"].each do |distribution| %>distribute-<%= distribution["name"] %> <% end %>
 
-<% config["distributions"].each do |distribution| %>
-
-<% if distribution["type"] == "testflight" %>
+<% config["distributions"].each do |distribution| -%>
+<% if distribution["type"] == "testflight" -%>
+# Upload <%=distribution["ipa"]%>.ipa to <%=distribution["type"]%>
 distribute-<%= distribution["name"] %>:
 	curl http://testflightapp.com/api/builds.json \
 		-F file=@'$(IPAS_PATH)/<%= distribution["ipa"] %>.ipa' \
@@ -86,11 +89,11 @@ distribute-<%= distribution["name"] %>:
 		-F team_token='<%= distribution["team-token"] %>' \
 		-F notify='<%= distribution["notify"].to_s %>' \
 		-F distribution_lists='<%= distribution["distribution-list"] %>'
-<% end %>
+<% end -%>
 
-<% end %>
-<% end %>
-
+<% end -%>
+<% end -%>
+# Clean artifacts and temp directories
 clean:
 	rm -rf $(ARTIFACTS_PATH)
 	rm -rf $(TEMP_DIR)
