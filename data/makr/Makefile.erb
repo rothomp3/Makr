@@ -10,6 +10,9 @@ ARCHIVES_PATH = $(ARTIFACTS_PATH)/archives
 # Path for built IPAs
 IPAS_PATH = $(ARTIFACTS_PATH)/ipas
 
+# Provisioning profiles dir
+PROFILES_DIR = $(CURDIR)/profiles
+
 # Temporary build dir
 TEMP_DIR = $(CURDIR)/tmp
 
@@ -36,6 +39,14 @@ UPDATE_VERSION = update-version
 else
 UPDATE_VERSION=
 endif
+
+# Create profiles directory
+$(PROFILES_DIR):
+	mkdir $@
+
+# Install provisioning profiles
+install-profiles: $(PROFILES_DIR)
+	rsync -av ./profiles/ ~/Library/MobileDevice/Provisioning\ Profiles/
 
 # Updates project version if needed and generates all IPAs
 all: $(UPDATE_VERSION) $(IPAS)
