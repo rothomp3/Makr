@@ -40,6 +40,9 @@ else
 UPDATE_VERSION=
 endif
 
+# Updates project version if needed and generates all IPAs
+all: $(UPDATE_VERSION) $(IPAS)
+
 # Create profiles directory
 $(PROFILES_DIR):
 	mkdir $@
@@ -47,9 +50,6 @@ $(PROFILES_DIR):
 # Install provisioning profiles
 install-profiles: $(PROFILES_DIR)
 	rsync -av ./profiles/ ~/Library/MobileDevice/Provisioning\ Profiles/
-
-# Updates project version if needed and generates all IPAs
-all: $(UPDATE_VERSION) $(IPAS)
 
 # Updates project version using agvtool
 update-version:
