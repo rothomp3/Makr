@@ -1,22 +1,22 @@
 #!/usr/bin/env ruby
 
-require 'json'
 require 'erb'
+require 'yaml'
 
-if !File.exist?('config.json')
-	puts 'No config.json found- outputting config.json template'
+if !File.exist?('config.yaml')
+	puts 'No config.yaml found- outputting config.yaml template'
 
-	config = IO.read("#{Gem.datadir('makr')}/config.json")
-	File.open('config.json', 'w') do |f|
+	config = IO.read("#{Gem.datadir('makr')}/config.yaml")
+	File.open('config.yaml', 'w') do |f|
 		f.write config
 	end
 
-	puts 'config.json created, please edit and run again.'
+	puts 'config.yaml created, please edit and run again.'
 	abort
 end
 
-puts 'Reading config.json'
-config = JSON.parse(IO.read("config.json"))
+puts 'Reading config.yaml'
+config = YAML.load_file("config.yaml")
 template = IO.read("#{Gem.datadir('makr')}/Makefile.erb")
 
 puts 'Generating Makefile'

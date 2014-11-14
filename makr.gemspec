@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.authors = ['Andrew Carter']
   s.email = 'andrew.carter@willowtreeapps.com'
   s.license = 'MIT'
-  s.files = ['data/makr/Makefile.erb', 'data/makr/config.json']
+  s.files = ['data/makr/Makefile.erb', 'data/makr/config.yaml']
   s.executables << 'makr'
   s.homepage = 'http://wwww.willowtreeapps.com'
 end

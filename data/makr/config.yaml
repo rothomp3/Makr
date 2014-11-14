@@ -1,0 +1,20 @@
+---
+  archives:
+    -
+      name: "archive-name"
+      scheme: "scheme"
+      configuration: "configuration"
+      project: "project-name"
+      workspace: "workspace-name"
+      ipas:
+        -
+          name: "ipa-name"
+          profile: "profile-name"
+          distributions:
+            -
+              type: "testflight"
+              name: "distribution-name"
+              team-token: "team-token"
+              api-token: "api-token"
+              distribution-list: "list"
+              notes: "New build!"
