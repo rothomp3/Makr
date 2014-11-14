@@ -27,7 +27,9 @@ BUILD_ENV_OPTIONS = SHARED_PRECOMPS_DIR="$(TEMP_DIR)/precomps" \
 ARCHIVES = <% config["archives"].each do |archive| %>$(ARCHIVES_PATH)/<%= archive["name"] %>.xcarchive <% end %>
 
 # IPAs
-IPAS = <% config["ipas"].each do |ipa| %>$(IPAS_PATH)/<%= ipa["name"] %>.ipa <% end %>
+IPAS = <% config["archives"].each do |archive| -%>
+<% archive["ipas"].each do |ipa| -%>
+$(IPAS_PATH)/<%= ipa["name"] %>.ipa <% end -%><% end -%>
 
 # Get current version
 CURRENT_VERSION=$(shell agvtool what-version -terse)
@@ -70,40 +72,49 @@ $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive:
 	cp -r "$(CONFIGURATION_BUILD_DIR)/"*".dSYM" "$(DSYMS_PATH)/<%=archive["name"]%>/"
 	rm -rf $(TEMP_DIR)
 
-<% end -%>
-# Path to built IPAs
-$(IPAS_PATH):
-	mkdir -p $(IPAS_PATH)
-
-<% config["ipas"].each do |ipa| -%>
+<% archive["ipas"].each do |ipa| -%>
 # Create <%=ipa["name"]%>.ipa
-$(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=ipa["archive"]%>.xcarchive
+$(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive
 	xcodebuild -exportArchive \
 		-exportFormat IPA \
 		-exportProvisioningProfile "<%=ipa["profile"]%>" \
-		-archivePath "$(ARCHIVES_PATH)/<%=ipa["archive"]%>.xcarchive" \
+		-archivePath "$(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive" \
 		-exportPath "$@"
 
-<% end -%>
-<% if config["distributions"] != nil -%>
-# Run all distribution tasks
-distribute-all: <% config["distributions"].each do |distribution| %>distribute-<%= distribution["name"] %> <% end %>
-
-<% config["distributions"].each do |distribution| -%>
+<% if ipa["distributions"] != nil -%>
+<% ipa["distributions"].each do |distribution| -%>
 <% if distribution["type"] == "testflight" -%>
-# Upload <%=distribution["ipa"]%>.ipa to <%=distribution["type"]%>
+# Upload <%=ipa["name"]%>.ipa to <%=distribution["type"]%>
 distribute-<%= distribution["name"] %>:
 	curl http://testflightapp.com/api/builds.json \
-		-F file=@'$(IPAS_PATH)/<%= distribution["ipa"] %>.ipa' \
+		-F file=@'$(IPAS_PATH)/<%= ipa["name"] %>.ipa' \
 		-F api_token='<%= distribution["api-token"] %>' \
 		-F notes='<%= distribution["notes"] %>' \
 		-F team_token='<%= distribution["team-token"] %>' \
 		-F notify='<%= distribution["notify"].to_s %>' \
 		-F distribution_lists='<%= distribution["distribution-list"] %>'
-<% end -%>
 
 <% end -%>
 <% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+# Path to built IPAs
+$(IPAS_PATH):
+	mkdir -p $(IPAS_PATH)
+
+# Run all distribution tasks
+distribute-all: <% config["archives"].each do |archive| -%>
+<% archive["ipas"].each do |ipa| -%>
+<% if ipa["distributions"] != nil -%>
+<% ipa["distributions"].each do |distribution| -%>
+ distribute-<%= distribution["name"] -%>
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+
+
 # Clean artifacts and temp directories
 clean:
 	rm -rf $(ARTIFACTS_PATH)
