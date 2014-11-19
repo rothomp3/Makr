@@ -1,4 +1,13 @@
 ---
+  tests:
+    -
+      name: "test-name"
+      project: "project-name"
+      workspace: "workspace-name"
+      scheme: "scheme-name"
+      platform: "platform"
+      os: "os"
+      device: "device"
   archives:
     -
       name: "archive-name"

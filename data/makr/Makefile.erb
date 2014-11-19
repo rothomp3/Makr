@@ -115,6 +115,14 @@ distribute-all: <% config["archives"].each do |archive| -%>
 <% end -%>
 
 
+<% if config["tests"] != nil -%>
+<% config["tests"].each do |test| -%>
+# Test <%= test["name"] %>
+test-<%= test["name"] %>:
+	xcodebuild test <% if test["workspace"] -%>-workspace "<%= test["workspace"] %>.xcworkspace"<% end %><% if test["project"] -%>-project "<%= test["project"] %>.xcodeproj"<% end %> -scheme "<%= test["scheme"] %>" -destination platform="<%= test["platform"] %>",OS="<%= test["os"] %>",name="<%= test["device"] %>"
+<% end -%>
+<% end -%>
+
 # Clean artifacts and temp directories
 clean:
 	rm -rf $(ARTIFACTS_PATH)
