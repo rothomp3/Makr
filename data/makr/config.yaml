@@ -1,29 +1,29 @@
 ---
-  tests:
+  tests: # List of all tests
     -
-      name: "test-name"
-      project: "project-name"
-      workspace: "workspace-name"
-      scheme: "scheme-name"
-      platform: "platform"
-      os: "os"
-      device: "device"
-  archives:
+      name: "my-name" # Name of test. Run with make test-my-name.
+      project: "project" # Name of project. Use this OR workspace.
+      workspace: "workspace" # Name of workspace. Use this OR project.
+      scheme: "scheme" # Scheme to use during test. Make sure it's shared.
+      platform: "platform" # Platform to use for test. e.g. iOS Simulator.
+      os: "os" # OS to use for test. e.g. 8.1.
+      device: "device" # Device to use for test. e.g. iPad 2.
+  archives: # List of all archives.
     -
-      name: "archive-name"
-      scheme: "scheme"
-      configuration: "configuration"
-      project: "project-name"
-      workspace: "workspace-name"
-      ipas:
+      name: "my-name" # Name of archive. Run with make artifacts/archives/my-name.xcarchive
+      scheme: "scheme" # Scheme to use during archive. Make sure it's shared.
+      configuration: "configuration" # Configuration to use during archive.
+      project: "project-name" # Name of project. Use this OR workspace.
+      workspace: "workspace-name" # Name of workspace. Use this OR project.
+      ipas: # List of all ipas to generate from parent archive
         -
-          name: "ipa-name"
-          profile: "profile-name"
-          distributions:
+          name: "my-name" # Name of ipa. Run with make artifacts/ipas/my-name.ipa
+          profile: "profile-name" # Provisioning profile to use when exporting ipa.
+          distributions: # List of all distributions for the parent ipa
             -
-              type: "testflight"
-              name: "distribution-name"
-              team-token: "team-token"
-              api-token: "api-token"
-              distribution-list: "list"
-              notes: "New build!"
+              type: "testflight" # Distribution type. testflight is currently the only option.
+              name: "my-name" # Distribution name. Run with make distribute my-name
+              team-token: "team-token" # Testflight team token.
+              api-token: "api-token" # Testflight API token.
+              distribution-list: "list" # Testflight distribution list.
+              notes: "New build!" # Release notes
