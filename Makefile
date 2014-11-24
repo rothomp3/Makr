@@ -1,4 +1,4 @@
-VERSION = 1.0.1
+VERSION = 1.0.2
 GEM_NAME = makr
 
 all: $(GEM_NAME)-$(VERSION).gem
