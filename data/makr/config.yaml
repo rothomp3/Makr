@@ -27,3 +27,4 @@
               api-token: "api-token" # Testflight API token.
               distribution-list: "list" # Testflight distribution list.
               notes: "New build!" # Release notes
+              notify: true # Wether or not to notify people in distribution-list
