@@ -54,7 +54,7 @@ update-version:
 	agvtool new-version -all $(CURRENT_VERSION).$(BUILD_NUMBER)
 	agvtool new-marketing-version $(CURRENT_VERSION)
 
-<% config["archives"].each do |archive| -%>
+<% Array(config["archives"]).each do |archive| -%>
 # Create <%=archive["name"]%>.xcarchive
 $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive:
 	xcodebuild archive $(BUILD_ENV_OPTIONS) \
@@ -67,7 +67,7 @@ $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive:
 		-archivePath $@
 	rm -rf $(TEMP_DIR)
 
-<% archive["ipas"].each do |ipa| -%>
+<% Array(archive["ipas"]).each do |ipa| -%>
 # Create <%=ipa["name"]%>.ipa
 $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive
 	xcodebuild -exportArchive \
@@ -76,8 +76,7 @@ $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["nam
 		-archivePath "$(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive" \
 		-exportPath "$@"
 
-<% if ipa["distributions"] != nil -%>
-<% ipa["distributions"].each do |distribution| -%>
+<% Array(ipa["distributions"]).each do |distribution| -%>
 <% if distribution["type"] == "testflight" -%>
 # Upload <%=ipa["name"]%>.ipa to <%=distribution["type"]%>
 distribute-<%= distribution["name"] %>:
@@ -89,7 +88,6 @@ distribute-<%= distribution["name"] %>:
 		-F notify='<%= distribution["notify"].to_s %>' \
 		-F distribution_lists='<%= distribution["distribution-list"] %>'
 
-<% end -%>
 <% end -%>
 <% end -%>
 <% end -%>
@@ -110,12 +108,10 @@ distribute-all: <% config["archives"].each do |archive| -%>
 <% end -%>
 
 
-<% if config["tests"] != nil -%>
-<% config["tests"].each do |test| -%>
+<% Array(config["tests"]).each do |test| -%>
 # Test <%= test["name"] %>
 test-<%= test["name"] %>:
 	xcodebuild test <% if test["workspace"] -%>-workspace "<%= test["workspace"] %>.xcworkspace"<% end %><% if test["project"] -%>-project "<%= test["project"] %>.xcodeproj"<% end %> -scheme "<%= test["scheme"] %>" -destination platform="<%= test["platform"] %>",OS="<%= test["os"] %>",name="<%= test["device"] %>"
-<% end -%>
 <% end -%>
 
 # Clean artifacts and temp directories
