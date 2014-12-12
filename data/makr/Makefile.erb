@@ -82,7 +82,7 @@ $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["nam
 <% Array(ipa["distributions"]).each do |distribution| -%>
 <% if distribution["type"] == "testflight" -%>
 # Upload <%=ipa["name"]%>.ipa to <%=distribution["type"]%>
-distribute-<%= distribution["name"] %>:
+distribute-<%= ipa["name"] %>-<%= distribution["name"] %>:
 	curl http://testflightapp.com/api/builds.json \
 		-F file=@'$(IPAS_PATH)/<%= ipa["name"] %>.ipa' \
 		-F api_token='<%= distribution["api-token"] %>' \
@@ -103,7 +103,7 @@ $(IPAS_PATH):
 distribute-all: <% Array(config["archives"]).each do |archive| -%>
 <% Array(archive["ipas"]).each do |ipa| -%>
 <% Array(ipa["distributions"]).each do |distribution| -%>
- distribute-<%= distribution["name"] -%>
+ distribute-<%= ipa["name"] %>-<%= distribution["name"] -%>
 <% end -%>
 <% end -%>
 <% end -%>
