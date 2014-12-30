@@ -30,19 +30,8 @@ IPAS = <% Array(config["archives"]).each do |archive| -%>
 <% Array(archive["ipas"]).each do |ipa| -%>
 $(IPAS_PATH)/<%= ipa["name"] %>.ipa <% end -%><% end -%>
 
-# Get current version
-CURRENT_VERSION=$(shell agvtool what-version -terse)
-
-# If build number if defined and it's different than the current build number
-# add update-version step to be used for all target
-ifdef BUILD_NUMBER
-UPDATE_VERSION = update-version
-else
-UPDATE_VERSION=
-endif
-
-# Updates project version if needed and generates all IPAs
-all: $(UPDATE_VERSION) $(IPAS)
+# Generates all IPAs
+all: $(IPAS)
 
 # Create profiles directory
 $(PROFILES_DIR):
@@ -51,11 +40,6 @@ $(PROFILES_DIR):
 # Install provisioning profiles
 install-profiles: $(PROFILES_DIR)
 	rsync -av ./profiles/ ~/Library/MobileDevice/Provisioning\ Profiles/
-
-# Updates project version using agvtool
-update-version:
-	agvtool new-version -all $(CURRENT_VERSION).$(BUILD_NUMBER)
-	agvtool new-marketing-version $(CURRENT_VERSION)
 
 <% Array(config["archives"]).each do |archive| -%>
 # Create <%=archive["name"]%>.xcarchive
