@@ -64,7 +64,27 @@ $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["nam
 		-exportPath "$@"
 
 <% Array(ipa["distributions"]).each do |distribution| -%>
-<% if distribution["type"] == "testflight" -%>
+<% if distribtuion["type"] == "hockeyapp" -%>
+# Upload <%=ipa["name"]%>.ipa to <%=distribution["type"]%>
+distribute-<%= ipa["name"] %>-<%= distribution["name"] %>:
+	curl https://rink.hockeyapp.net/api/2/apps/upload \
+	-H 'X-HockeyAppToken: distribution["api-token"]' \
+	-F ipa=@'$(IPAS_PATH)/<%= ipa["name"] %>.ipa' \
+	-F notes='<%= distribution["notes"] %>' \
+	-F notes_type='<%= distribution["notes_type"] %>' \
+	-F notify='<%= distribution["notify"] %>' \
+	-F status='<%= distribution["status"] %>' \
+	-F tags='<%= distribution["tags"] %>' \
+	-F teams='<%= distribution["teams"] %>' \
+	-F users='<%= distribution["users"] %>' \
+	-F mandatory='<%= distribution["mandatory"] %>' \
+	-F release_type='<%= distribution["release_type"] %>' \
+	-F private='<%= distribution["private"] %>' \
+	-F commit_sha='<%= distribution["commit_sha"] %>' \
+	-F build_server_url='<%= distribution["build_server_url"] %>' \
+	-F repository_url='<%= distribution["repository_url"] %>' \
+
+<% elsif distribution["type"] == "testflight" -%>
 # Upload <%=ipa["name"]%>.ipa to <%=distribution["type"]%>
 distribute-<%= ipa["name"] %>-<%= distribution["name"] %>:
 	curl http://testflightapp.com/api/builds.json \
