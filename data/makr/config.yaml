@@ -35,7 +35,7 @@
               notes: "New build!" # (Optional) Release notes as Textile or Markdown
               notes_type: 0 # (Optional) Type of release notes: 0 for Textile, 1 for Markdown
               notify: 0 # (Optional) Notify testers: 0 no notify, 1 notify testers that can install app, 2 notify all
-              status: 1 # (Optional) Download status: 1 don't allow users to download, 2 make available for download
+              status: 2 # (Optional) Download status: 1 don't allow users to download, 2 make available for download
               tags: "" # (Optional) Restrict download to comma-separated list of tags
               teams: "" # (Optional) Restrict download to comma-separated list of team IDs
               users: "" # (Optional) Restrict download to comma-separated list of user IDs
