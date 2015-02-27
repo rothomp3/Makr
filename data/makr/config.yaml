@@ -21,14 +21,6 @@
           profile: "profile-name" # Provisioning profile to use when exporting ipa.
           distributions: # List of all distributions for the parent ipa
             -
-              type: "testflight" # Distribution type.
-              name: "" # Distribution name. Run with make distribute my-name
-              team-token: "" # Testflight team token.
-              api-token: "" # Testflight API token.
-              distribution-list: "" # (Optional) Testflight distribution list.
-              notes: "New build!" # (Optional) Release notes
-              notify: true # (Optional) Wether or not to notify people in distribution-list
-            -
               type: "hockeyapp" # Distribution type.
               api-token: "" # X-HockeyAppToken
               name: "my-name" # Distribution name. Run with make distribute my-name
