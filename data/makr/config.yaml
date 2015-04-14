@@ -5,9 +5,9 @@
       project: "project" # Name of project. Use this OR workspace.
       workspace: "workspace" # Name of workspace. Use this OR project.
       scheme: "scheme" # Scheme to use during test. Make sure it's shared.
-      platform: "platform" # Platform to use for test. e.g. iOS Simulator.
-      os: "os" # OS to use for test. e.g. 8.1.
-      device: "device" # Device to use for test. e.g. iPad 2.
+      platform: "platform" # Platform to use for test. e.g. "iOS Simulator"
+      os: "os" # OS to use for test. e.g. "8.3"
+      device: "device" # Device to use for test. e.g. "iPad 2"
   archives: # List of all archives.
     -
       name: "my-name" # Name of archive. Run with make artifacts/archives/my-name.xcarchive
