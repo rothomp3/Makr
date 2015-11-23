@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'makr'
-  s.version = '1.3.0'
+  s.version = '1.4.0'
   s.summary = 'A tool to generate a Makefile that builds, tests, and distributes Xcode projects or workspaces.'
   s.description = 'Makr reads the config.yaml file in the current directory to generate a Makefile capable of building, testing, and distributing Xcode projects and workspaces.'
   s.authors = ['Andrew Carter']

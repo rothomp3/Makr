@@ -19,6 +19,7 @@
         -
           name: "my-name" # Name of ipa. Run with make artifacts/ipas/my-name.ipa
           profile: "profile-name" # Provisioning profile to use when exporting ipa.
+          options: "my-options.plist" # Path to export options plist
           distributions: # List of all distributions for the parent ipa
             -
               type: "hockeyapp" # Distribution type.
