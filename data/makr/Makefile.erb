@@ -59,8 +59,6 @@ $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive:
 $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive
 	xcodebuild -exportArchive \
 		-exportOptionsPlist "<%=ipa["options"]%>" \
-		-exportFormat IPA \
-		-exportProvisioningProfile "<%=ipa["profile"]%>" \
 		-archivePath "$(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive" \
 		-exportPath "$@"
 
