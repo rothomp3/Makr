@@ -28,7 +28,7 @@ ARCHIVES = <% config["archives"].each do |archive| %>$(ARCHIVES_PATH)/<%= archiv
 # IPAs
 IPAS = <% Array(config["archives"]).each do |archive| -%>
 <% Array(archive["ipas"]).each do |ipa| -%>
-$(IPAS_PATH)/<%= ipa["name"] %>.ipa <% end -%><% end -%>
+$(IPAS_PATH)/<%= ipa["name"] %> <% end -%><% end -%>
 
 # Generates all IPAs
 all: $(IPAS)
@@ -55,8 +55,8 @@ $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive:
 	rm -rf $(TEMP_DIR)
 
 <% Array(archive["ipas"]).each do |ipa| -%>
-# Create <%=ipa["name"]%>.ipa
-$(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive
+# Create <%=ipa["name"]%>/<%= archive["name"] %>.ipa
+$(IPAS_PATH)/<%=ipa["name"]%>: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive
 	xcodebuild -exportArchive \
 		-exportOptionsPlist "<%=ipa["options"]%>" \
 		-archivePath "$(ARCHIVES_PATH)/<%=archive["name"]%>.xcarchive" \
@@ -68,7 +68,7 @@ $(IPAS_PATH)/<%=ipa["name"]%>.ipa: $(IPAS_PATH) $(ARCHIVES_PATH)/<%=archive["nam
 distribute-<%= ipa["name"] %>-<%= distribution["name"] %>:
 	curl https://rink.hockeyapp.net/api/2/apps/upload \
 	-H 'X-HockeyAppToken: <%= distribution["api-token"] %>' \
-	-F ipa=@'$(IPAS_PATH)/<%= ipa["name"] %>.ipa' \
+	-F ipa=@'$(IPAS_PATH)/<%= ipa["name"] %>/<%= archive["name"] %>.ipa' \
 	-F notes='<%= distribution["notes"] %>' \
 	-F notes_type='<%= distribution["notes_type"] %>' \
 	-F notify='<%= distribution["notify"] %>' \
