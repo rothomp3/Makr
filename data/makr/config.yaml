@@ -10,6 +10,7 @@
       device: "device" # Device to use for test. e.g. "iPad 2"
   archives: # List of all archives.
     -
+      bundle_name: "my-name" # Name of actual product, CFBundleName
       name: "my-name" # Name of archive. Run with make artifacts/archives/my-name.xcarchive
       scheme: "scheme" # Scheme to use during archive. Make sure it's shared.
       configuration: "configuration" # Configuration to use during archive.

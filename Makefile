@@ -1,9 +1,9 @@
-VERSION = 1.4.1
+VERSION = 1.4.2
 GEM_NAME = makr
 
 all: $(GEM_NAME)-$(VERSION).gem
 
-$(GEM_NAME)-$(VERSION).gem:
+$(GEM_NAME)-$(VERSION).gem: data/makr/Makefile.erb data/makr/config.yaml
 	gem build $(GEM_NAME).gemspec
 
 clean:
